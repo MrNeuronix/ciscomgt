@@ -49,6 +49,9 @@ public class SSHSessionExec
     public String command(String command)
             throws Exception
     {
+
+        System.out.println("["+host+"] Sending: "+command);
+
         StringBuffer result = new StringBuffer();
         ChannelExec channel = null;
         try

@@ -33,13 +33,7 @@ public class Switch extends Model {
 
     /** Switch ports */
     @OneToMany
-    @ElementCollection
-    @CollectionTable(
-            name="port",
-            joinColumns=@JoinColumn(name="id")
-    )
     public List<Port> ports;
-
 
     public String getManagementIP() {
         return managementIP;

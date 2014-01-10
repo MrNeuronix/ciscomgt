@@ -30,4 +30,36 @@ public class PortSecurity extends Model {
     @CollectionTable(name="portsecurity_macs", joinColumns=@JoinColumn(name="portsec_id"))
     @Column(name="mac")
     private List<String> portSecurityMACAdresses;
+
+    public boolean isPortSecurityEnabled() {
+        return portSecurityEnabled;
+    }
+
+    public void setPortSecurityEnabled(boolean portSecurityEnabled) {
+        this.portSecurityEnabled = portSecurityEnabled;
+    }
+
+    public String getPortSecurityPolicy() {
+        return portSecurityPolicy;
+    }
+
+    public void setPortSecurityPolicy(String portSecurityPolicy) {
+        this.portSecurityPolicy = portSecurityPolicy;
+    }
+
+    public int getPortSecurityMaxMAC() {
+        return portSecurityMaxMAC;
+    }
+
+    public void setPortSecurityMaxMAC(int portSecurityMaxMAC) {
+        this.portSecurityMaxMAC = portSecurityMaxMAC;
+    }
+
+    public List<String> getPortSecurityMACAdresses() {
+        return portSecurityMACAdresses;
+    }
+
+    public void setPortSecurityMACAdresses(List<String> portSecurityMACAdresses) {
+        this.portSecurityMACAdresses = portSecurityMACAdresses;
+    }
 }

@@ -25,4 +25,31 @@ public class VLAN extends Model {
     /** VLAN status, e.g. active */
     private String state;
 
+    public int getVlanID() {
+        return vlanID;
+    }
+
+    public void setVlanID(int vlanID) {
+        this.vlanID = vlanID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public static VLAN load(int vlanID) {
+        return VLAN.find("byVlanID", vlanID).first();
+    }
 }
