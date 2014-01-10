@@ -8,20 +8,33 @@ package jobs;
  * License: Apache 2.0
  */
 
+import models.Switch;
+import play.Play;
 import play.jobs.*;
 import utils.connection.ssh.SSHSessionExec;
+
+import java.util.List;
 
 @OnApplicationStart
 public class Bootstrap extends Job {
 
     public void doJob() throws Exception {
-        System.out.println("App in boot");
 
-            SSHSessionExec session = new SSHSessionExec("192.168.1.42", 22, "test", "test" );
+        List<Switch> switches = Switch.findAll();
+
+        for(Switch sw : switches)
+        {
+            SSHSessionExec session = new SSHSessionExec(
+                    sw.getManagementIP(),
+                    22,
+                    Play.configuration.getProperty("ciscomgt.username"),
+                    Play.configuration.getProperty("ciscomgt.password")
+            );
             session.setTimeout( 5000 );
             session.connect();
 
-        System.out.println("CFG: "+session.command( "show run" ));
+            System.out.println("APP: "+session.command("sh run int fa0/1"));
+        }
     }
 
 }
