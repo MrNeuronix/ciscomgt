@@ -1,0 +1,22 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+*       /                                       module:secure
+
+# Home page
+GET     /                                                   Application.index
+
+GET     /devices/switch/view/{switch_id}                    Switches.viewSwitch
+GET     /devices/port/{port_id}/disable                     Switches.shutPort
+GET     /devices/port/{port_id}/enable                      Switches.upPort
+GET     /devices/port/{port_id}/portsecurity/enable         Switches.enablePortSecurity
+GET     /devices/port/{port_id}/portsecurity/disable        Switches.disablePortSecurity
+GET     /devices/port/{port_id}/portsecurity/add            Switches.addPortSecurity
+GET     /devices/port/{port_id}/portsecurity/remove         Switches.removePortSecurity
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}
