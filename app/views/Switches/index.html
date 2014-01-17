@@ -1,6 +1,5 @@
-@(title: String)(user: UserModel)(switch: SwitchModel)(ports: List[PortModel])
-
-@generic(title = title, user = user) {
+#{extends 'generic.html' /}
+#{set title:'Home' /}
 
                     <div>
                         <ul class="breadcrumb">
@@ -11,7 +10,7 @@
                                 <a href="#">Устройства</a> <span class="divider">/</span>
                             </li>
                             <li>
-                                <a href="#">@switch.getName</a>
+                                <a href="#">${sw.hostname}</a>
                             </li>
                         </ul>
                     </div>
@@ -19,7 +18,7 @@
                     <div class="row-fluid sortable">
                         <div class="box span12">
                             <div class="box-header well" data-original-title>
-                                <h2><i class="icon-picture"></i> Коммутатор @switch.getName</h2>
+                                <h2><i class="icon-picture"></i> Коммутатор ${sw.hostname}</h2>
                                 <div class="box-icon">
                                     <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                                     <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
@@ -46,49 +45,56 @@
                                             </thead>
                                             <tbody>
 
-                                             @for(port <- ports) {
+                                            #{list items:sw.getPorts(), as:'port'}
 
                                                 <tr>
-                                                    <td>@port.getId</td>
-                                                    <td>@port.getDescription</td>
+                                                    <td>${port.portID}</td>
+                                                    <td>${port.description}</td>
                                                     <td class="center">
-                                                        @if(port.getState.equals("connected")) {
-                                                            <span class="label label-success"><a href="/devices/switch/@switch.id_key/port/@port.getId_key/disable"><i class="icon-off icon-white"></i></a> Подключен</span>
-                                                        }
-                                                        @if(port.getState.equals("notconnect")) {
-                                                            <span class="label label-important"><a href="/devices/switch/@switch.id_key/port/@port.getId_key/disable"><i class="icon-off icon-white"></i></a> Не подключен</span>
-                                                        }
-                                                        @if(port.getState.equals("disabled")) {
-                                                            <span class="label label-failed"><a href="/devices/switch/@switch.id_key/port/@port.getId_key/enable"><i class="icon-off icon-white"></i></a> Выключен</span>
-                                                        }
+                                                        #{if port.state.equals("connected")}
+                                                            <span class="label label-success"><a href="/devices/port/${port.id}/disable"><i class="icon-off icon-white"></i></a> Подключен</span>
+                                                        #{/if}
+                                                        #{elseif port.state.equals("notconnect")}
+                                                            <span class="label label-important"><a href="/devices/port/${port.id}/disable"><i class="icon-off icon-white"></i></a> Не подключен</span>
+                                                        #{/elseif}
+                                                        #{elseif port.state.equals("disabled")}
+                                                            <span class="label label-failed"><a href="/devices/port/${port.id}/enable"><i class="icon-off icon-white"></i></a> Выключен</span>
+                                                        #{/elseif}
 
                                                     </td>
-                                                    <td>@port.getVlan</td>
+
+                                                    <td>${port.vlan.state}</td>
                                                     <td class="center">
-                                                    @if(port.getVlan.equals("trunk")) {
+                                                    #{if port.getVlan().equals("trunk")}
                                                         <span class="label label-success">Да</span>
-                                                    } else {
+                                                    #{/if}
+                                                    #{else }
                                                         <span class="label label-warning">Нет</span>
-                                                    }
+                                                    #{/else}
+
                                                     </td>
-                                                    <td>@port.getSpeed</td>
-                                                    <td>@port.getDuplex</td>
+                                                    <td>${port.speed}</td>
+                                                    <td>${port.duplex}</td>
 
                                                     <td class="center">
 
-                                                    @if(!port.getVlan.equals("trunk")) {
+                                                    <!--- @if(!port.getVlan.equals("trunk")) {
                                                         @if(port.isPortSecurityEnabled == true) {
                                                             <span class="label label-success"><a href="/devices/switch/@switch.id_key/port/@port.getId_key/portsecurity/disable"><i class="icon-off icon-white"></i></a> Включен</span>
                                                         } else {
                                                             <span class="label label-important"><a href="/devices/switch/@switch.id_key/port/@port.getId_key/portsecurity/enable"><i class="icon-off icon-white"></i></a> Выключен</span>
                                                         }
-                                                    }
+                                                    } -->
+
+                                                        <span class="label label-success"><a href="/devices/port/${port.id}/portsecurity/disable"><i class="icon-off icon-white"></i></a> Включен</span>
+
+
                                                     </td>
 
-                                                    <td>@port.getPortSecurityPolicy</td>
+                                                    <td>test</td>
 
                                                     <td>
-                                                    @if(!port.getVlan.equals("trunk") && port.getPortSecurityMACAdresses != null) {
+                                                    <!-- @if(!port.getVlan.equals("trunk") && port.getPortSecurityMACAdresses != null) {
                                                         @for(mac <- port.getPortSecurityMACAdresses.split(",")) {
                                                             @if(!mac.isEmpty) {
                                                                     @mac  <a href="/devices/switch/@switch.id_key/port/@port.getId_key/portsecurity/remove/@mac"> <i class="icon-remove"></i></a><br>
@@ -96,15 +102,15 @@
                                                         }
                                                     @if(port.getPortSecurityMACAdresses) {
                                                         <br>
-                                                    }
-                                                        <i class="icon-check"></i> <a data-toggle="modal" href="#addPSMAC@switch.id_key@port.getId_key">Добавить</a>
+                                                    }  -->
+                                                        <i class="icon-check"></i> <a data-toggle="modal" href="#addPSMAC${sw.id}${port.id}">Добавить</a>
 
 
-                                                        <form method="GET" action="/devices/switch/@switch.id_key/port/@port.getId_key/portsecurity/add">
-                                                        <div id="addPSMAC@switch.id_key@port.getId_key" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addPSMAC@switch.id_key@port.getId_key" aria-hidden="true">
+                                                        <form method="GET" action="/devices/port/${port.id}/portsecurity/add">
+                                                        <div id="addPSMAC${sw.id}${port.id}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addPSMAC${sw.id}${port.id}" aria-hidden="true">
                                                             <div class="modal-header">
                                                                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                                                                <h4>Введите MAC-адрес для @port.getId (@port.getDescription)</h4>
+                                                                <h4>Введите MAC-адрес для ${port.id} (${port.description})</h4>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="divDialogElements">
@@ -118,23 +124,23 @@
                                                             </div>
                                                         </div>
                                                         </form>
-                                                    }
+
 
                                                     </td>
 
                                                     <td class="center">
-                                                        <a class="btn btn-success" href="/devices/switch/@switch.id_key/port/@port.getId_key/verbose">
+                                                        <a class="btn btn-success" href="/devices/port/${port.id}y/verbose">
                                                             <i class="icon-zoom-in icon-white"></i>
                                                             Подробнее
                                                         </a>
-                                                        <a class="btn btn-info" href="/devices/switch/@switch.id_key/port/@port.getId_key/edit">
+                                                        <a class="btn btn-info" href="/devices/port/${port.id}y/edit">
                                                             <i class="icon-edit icon-white"></i>
                                                             Редактировать
                                                         </a>
                                                     </td>
                                                 </tr>
 
-                                                }
+                                                #{/list}
 
                                             </tbody>
                                         </table>
@@ -142,7 +148,3 @@
 
                         </div><!--/span-->
                     </div><!--/span-->
-
-
-}
-

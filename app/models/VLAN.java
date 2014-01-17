@@ -17,13 +17,13 @@ import javax.persistence.ManyToOne;
 public class VLAN extends Model {
 
     /** VLAN id, e.g. 5 */
-    private int vlanID;
+    public int vlanID;
 
     /** VLAN description */
-    private String description;
+    public String description;
 
     /** VLAN status, e.g. active */
-    private String state;
+    public String state;
 
     public int getVlanID() {
         return vlanID;
@@ -51,5 +51,14 @@ public class VLAN extends Model {
 
     public static VLAN load(int vlanID) {
         return VLAN.find("byVlanID", vlanID).first();
+    }
+
+    @Override
+    public String toString() {
+        return "VLAN{" +
+                "vlanID=" + vlanID +
+                ", description='" + description + '\'' +
+                ", state='" + state + '\'' +
+                '}';
     }
 }

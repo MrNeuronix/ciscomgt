@@ -25,9 +25,9 @@ public class Switches extends Controller {
         }
     }
 
-    public static void index() {
-        List<Switch> switches = Switch.findAll();
-        render(switches);
+    public static void index(long switch_id) {
+        Switch sw = Switch.findById(switch_id);
+        render(sw);
     }
 
 }

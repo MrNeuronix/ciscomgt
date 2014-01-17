@@ -7,7 +7,7 @@
 # Home page
 GET     /                                                   Application.index
 
-GET     /devices/switch/view/{switch_id}                    Switches.viewSwitch
+GET     /devices/switch/view/{switch_id}                    Switches.index
 GET     /devices/port/{port_id}/disable                     Switches.shutPort
 GET     /devices/port/{port_id}/enable                      Switches.upPort
 GET     /devices/port/{port_id}/portsecurity/enable         Switches.enablePortSecurity

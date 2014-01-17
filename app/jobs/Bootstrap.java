@@ -17,7 +17,6 @@ import play.jobs.*;
 import utils.connection.ssh.SSHSessionExec;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +24,7 @@ import java.util.regex.Pattern;
 @OnApplicationStart
 public class Bootstrap extends Job {
 
-    public void doJob() throws Exception {
+     public void doJob() throws Exception {
 
         List<Switch> switches = Switch.findAll();
 
@@ -149,7 +148,4 @@ public class Bootstrap extends Job {
             sw.save();
         }
     }
-
-
-
 }
